@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>PostGrid v0.1.a</title>
+        <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    </head>
+    <body onload="checkAuthState()">
+    <script>
+        function checkAuthState() {
+            if("{{ authState }}" === "return") {
+                alert("Authentication Failed!")
+                // Show authentication failed message
+            }
+        }
+    </script>
+
+        <div class="auth_box">
+            <form id="authForm" action="/auth_bridge" method="GET">
+                <p><h3>Enter Local Database Details</h3></p>
+                <p><label>Name: <input type="text" id="dbName"/></label></p>
+                <p><label>Port: <input type="number" id="dbPort" value="5432"></label></p>
+                <p><label>User: <input type="text" id="dbUser"/></label></p>
+                <p>
+                    <label>Password: <input type="text" id="dbPass"/></label>
+                    <input type="checkbox" onclick="togglePassword()" id="passReq" value="1"/>
+                </p>
+            <p><input type="submit" value="Authenticate"/></p>
+        </form>
+        </div>
+    </body>
+</html>
