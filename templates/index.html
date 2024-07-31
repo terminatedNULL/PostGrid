@@ -1,33 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>PostGrid v0.1.a</title>
-        <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
-    </head>
-    <body onload="checkAuthState()">
-    <script>
-        function checkAuthState() {
-            if("{{ authState }}" === "return") {
-                alert("Authentication Failed!")
-                // Show authentication failed message
-            }
-        }
-    </script>
+<head>
+    <title>PostGrid v0.1.a</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
 
-        <div class="auth_box">
-            <form id="authForm" action="/auth_bridge" method="GET">
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<body>
+    <div class="auth_box">
+        <form id="authForm" action="/auth_bridge" method="POST">
+            <div class="form_float_row">
                 <p><h3>Enter Local Database Details</h3></p>
-                <p><label>Name: <input type="text" id="dbName"/></label></p>
-                <p><label>Port: <input type="number" id="dbPort" value="5432"></label></p>
-                <p><label>User: <input type="text" id="dbUser"/></label></p>
-                <p>
-                    <label>Password: <input type="text" id="dbPass"/></label>
-                    <input type="checkbox" onclick="togglePassword()" id="passReq" value="1"/>
-                </p>
+                <div class="form_float_column">
+                    <label class="float_label">Name:</label>
+                    <input class="float_input" type="text" name="dbName"/>
+                </div>
+                <div class="form_float_column">
+                    <label class="float_label">Host:</label>
+                    <input class="float_input" type="text" name="dbHost"/>
+                </div>
+                <div class="form_float_column">
+                    <label class="float_label">Port:</label>
+                    <input class="float_input" type="number" name="dbPort" value="5432"/>
+                </div>
+                <div class="form_float_column">
+                    <label class="float_label">User:</label>
+                    <input class="float_input" type="text" name="dbUser"/>
+                </div>
+                <div class="form_float_column button_row">
+                    <label class="float_label">Password:</label>
+                    <input class="float_input button_row_input" type="password" name="dbPass"/>
+                    <input class="show_pass_btn" type="button" onclick="hidePassword()" name="passVisibility" value="Show"/>
+                </div>
+            </div>
             <p><input type="submit" value="Authenticate"/></p>
         </form>
-        </div>
-    </body>
+    </div>
+</body>
 </html>

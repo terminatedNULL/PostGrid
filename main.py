@@ -2,46 +2,52 @@
 # Written by Alexander Yauchler (terminatedNULL)
 # Project Span : 7/29/2024 - ##/##/####
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from flaskwebgui import FlaskUI
 import psycopg2
 
 app = Flask(__name__)
+app.secret_key = "b(&A^90>>.,/ASDF(*&65#%$@~``~"
 
 
-@app.route('/auth/<state>')
-def auth(state):
-    return render_template("index.html", authState=state)
+@app.route('/auth', methods=["GET"])
+def auth():
+    return render_template("index.html")
 
 
 @app.route('/')
 def index():
-    return redirect("/auth/clean")
+    return redirect("/auth")
 
 
-@app.route('/auth_bridge', methods=["GET"])
-def authBridge():
-    if request.method == "GET":
-        # Attempt to connect to the database
-        # Check if database is using a password
-        try:
-            if request.form.get("passReq") == "1":
-                conn = psycopg2.connect(
-                    dbname=request.form.get("dbName"),
-                    user=request.form.get("dbUser"),
-                    port=request.form.get("dbPort"),
-                    password=request.form.get("dbPass")
-                )
-            else:
-                conn = psycopg2.connect(
-                    dbname=request.form.get("dbName"),
-                    user=request.form.get("dbUser"),
-                    port=request.form.get("dbPort")
-                )
-        except psycopg2.Error as err:
-            return redirect("/auth/return")
+@app.route('/auth_bridge', methods=["POST"])
+def authBridge():  # Attempts to connect to the database
+    data = request.form
 
-        return render_template("terminal.html")
+    # Check if database is using a password
+    try:
+        if len(data["dbPass"]) != 0:
+            conn = psycopg2.connect(
+                dbname=data["dbName"],
+                user=data["dbUser"],
+                port=int(data["dbPort"]),
+                host=data["dbHost"],
+                password=data["dbPass"]
+            )
+        else:
+            conn = psycopg2.connect(
+                dbname=data["dbName"],
+                user=data["dbUser"],
+                port=data["dbPort"],
+                host=data["dbHost"]
+            )
+    except psycopg2.Error as err:
+        flash("Authentication Failed!")
+        return redirect("/auth")
+
+    cur = conn.cursor()
+
+    return render_template("terminal.html")
 
 
 if __name__ == '__main__':

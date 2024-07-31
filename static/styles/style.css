@@ -1,17 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
 h3, label, input {
     font-family: "Trebuchet MS", serif;
 }
 
+form {
+    width: 100%;
+}
+
 .auth_box {
     width: 350px;
-
+    margin: auto;
     position: absolute;
     left: 50%;
     top: 50%;
-    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     text-align: center;
-
     background: cornflowerblue;
     border-radius: 7px;
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width and height */
+}
+
+.float_input {
+    height: 36px; /* Fixed height to match button height */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box; /* Include padding and border in the element's height and width */
+    width: 100%; /* Full width within the container */
+}
+
+.float_label {
+    width: 30%; /* Fixed width for label */
+    text-align: left;
+    padding: 5px;
+}
+
+.form_float_column {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form_float_row {
+    width: 100%;
+    display: block; /* Keep rows stacked vertically */
+}
+
+.show_pass_btn {
+    flex: 0 0 auto; /* Prevent button from growing */
+    height: 36px; /* Match the height of the input field */
+    width: 36px; /* Make it square */
+    aspect-ratio: 1; /* Make it square */
+    font-family: "Trebuchet MS", serif;
+    font-size: 10px;
+    color: cornflowerblue;
+    background: lightgray;
+    border-radius: 3px;
+    border-width: 0px;
+    margin-left: 10px; /* Space between the input and button */
+    padding: 0; /* Remove padding to ensure button stays square */
+    overflow: hidden; /* Hide any overflowing content */
+}
+
+.button_row {
+    width: 100%;
+    display: flex;
+    align-items: center; /* Ensure vertical alignment */
+}
+
+.button_row_input {
+    flex: 1; /* Grow to fill the available space */
+    min-width: 0; /* Prevent shrinking to zero width */
+}
+
+.button_row_input {
+    width: calc(100% - 46px); /* 100% width minus the button's width and margin */
 }
